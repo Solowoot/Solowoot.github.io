@@ -57,12 +57,45 @@
             border: none; border-radius: 12px; font-weight: 600; font-size: 16px;
             cursor: pointer; margin-top: 10px;
         }
+        .modal .btn:disabled {
+            background: #444; color: #888; cursor: not-allowed;
+        }
+        .modal .btn:disabled:hover { background: #444; }
         .modal .btn:hover { background: #ccc; }
         .modal .btn-outline { background: transparent; border: 1px solid #444; color: #fff; }
         .modal .btn-outline:hover { background: #222; }
         .modal .switch-link { color: #0071e3; cursor: pointer; text-align: center; margin-top: 15px; }
         .modal .switch-link:hover { text-decoration: underline; }
         .modal .error-msg { color: #ff6b6b; font-size: 13px; margin-bottom: 10px; display: none; }
+
+        /* ===== СТИЛИ ДЛЯ КВАДРАТИКА С ГАЛОЧКОЙ ===== */
+        .agreement-label {
+            display: flex; align-items: flex-start; gap: 12px; cursor: pointer;
+            margin-bottom: 20px; text-align: left; user-select: none;
+        }
+        .agreement-label input[type="checkbox"] { display: none; }
+        .agreement-checkbox {
+            width: 24px; min-width: 24px; height: 24px;
+            border: 2px solid #555; border-radius: 6px; background: #1c1c1e;
+            display: flex; align-items: center; justify-content: center;
+            position: relative; transition: all 0.3s ease;
+        }
+        .agreement-checkbox::after {
+            content: ''; position: absolute;
+            left: 7px; top: 3px; width: 6px; height: 11px;
+            border: solid #fff; border-width: 0 2px 2px 0;
+            transform: rotate(45deg) scale(0);
+            transition: transform 0.2s ease;
+        }
+        .agreement-label input:checked + .agreement-checkbox {
+            background: #0071e3; border-color: #0071e3;
+        }
+        .agreement-label input:checked + .agreement-checkbox::after {
+            transform: rotate(45deg) scale(1);
+        }
+        .agreement-text { color: #a1a1a6; font-size: 14px; line-height: 1.5; }
+        .agreement-text a { color: #fff; text-decoration: underline; }
+        .agreement-text a:hover { color: #0071e3; }
 
         /* Корзина */
         .cart-item {
@@ -252,7 +285,6 @@
                 <button class="tab-btn" onclick="openTab(event, 'tab-catalog')">🛒 Ассортимент</button>
             </div>
 
-            <!-- Вкладки 1-3 (без изменений) -->
             <div id="tab1" class="tab-content active">
                 <h2>Mac. Это не просто ноутбук.</h2>
                 <p style="margin-top: 20px; color: #a1a1a6; max-width: 800px; margin-left: auto; margin-right: auto;">MacBook — это синергия инженерного искусства и интуитивной простоты.</p>
@@ -274,7 +306,6 @@
                     <li><strong>Автономность до 22 часов.</strong> Pro 16" на M5 Max — рекордсмен.</li>
                 </ul>
             </div>
-            <!-- ========== ВКЛАДКА 3: КАК ВЫБРАТЬ ========== -->
             <div id="tab3" class="tab-content">
                 <h2>В поисках идеального Mac: гид по моделям</h2>
                 <div class="cards">
@@ -308,7 +339,6 @@
                 </p>
             </div>
 
-            <!-- Вкладка Ассортимент -->
             <div id="tab-catalog" class="tab-content">
                 <h2>🛒 Ассортимент MacBook</h2>
                 <p style="text-align: center; color: #a1a1a6; margin-bottom: 40px;">Все актуальные модели в наличии.</p>
@@ -322,7 +352,7 @@
         </div>
     </div>
 
-    <!-- ========== СЕКЦИИ (сокращённые) ========== -->
+    <!-- ========== СЕКЦИИ ========== -->
     <div class="advantages">
         <h2>Почему выбирают MacBook</h2>
         <div class="adv-grid">
@@ -335,30 +365,13 @@
         </div>
     </div>
 
-        <!-- ===================================================== -->
-    <!-- ========== СЕКЦИЯ: ОТЗЫВЫ С ФОРМОЙ ========== -->
-    <!-- ===================================================== -->
     <div class="reviews" id="reviewsSection">
         <h2>💬 Отзывы наших клиентов</h2>
-
-        <!-- Форма добавления отзыва -->
         <div style="max-width: 600px; margin: 0 auto 40px; background: #111; border: 1px solid #333; border-radius: 20px; padding: 30px;">
             <h3 style="color: #fff; margin-bottom: 15px; text-align: center; font-size: 20px;">Оставить отзыв</h3>
-
-            <!-- Сообщение об ошибке -->
             <div id="reviewError" style="color: #ff6b6b; font-size: 13px; margin-bottom: 10px; display: none; text-align: center;"></div>
-
-            <!-- Сообщение об успехе -->
             <div id="reviewSuccess" style="color: #6bff8e; font-size: 13px; margin-bottom: 10px; display: none; text-align: center;"></div>
-
-            <input
-                type="text"
-                id="reviewName"
-                placeholder="Ваше имя *"
-                style="width: 100%; padding: 14px; margin-bottom: 12px; background: #1c1c1e; border: 1px solid #444; border-radius: 12px; color: #fff; font-size: 16px; font-family: 'Segoe UI', Arial, sans-serif;"
-            >
-
-            <!-- Выбор звёзд -->
+            <input type="text" id="reviewName" placeholder="Ваше имя *" style="width: 100%; padding: 14px; margin-bottom: 12px; background: #1c1c1e; border: 1px solid #444; border-radius: 12px; color: #fff; font-size: 16px; font-family: 'Segoe UI', Arial, sans-serif;">
             <div style="display: flex; gap: 10px; justify-content: center; margin-bottom: 15px;" id="starRating">
                 <span style="font-size: 32px; cursor: pointer; color: #333; transition: 0.2s;" onclick="setRating(1)" onmouseover="hoverStars(1)" onmouseout="resetStars()" data-star="1">★</span>
                 <span style="font-size: 32px; cursor: pointer; color: #333; transition: 0.2s;" onclick="setRating(2)" onmouseover="hoverStars(2)" onmouseout="resetStars()" data-star="2">★</span>
@@ -366,281 +379,36 @@
                 <span style="font-size: 32px; cursor: pointer; color: #333; transition: 0.2s;" onclick="setRating(4)" onmouseover="hoverStars(4)" onmouseout="resetStars()" data-star="4">★</span>
                 <span style="font-size: 32px; cursor: pointer; color: #333; transition: 0.2s;" onclick="setRating(5)" onmouseover="hoverStars(5)" onmouseout="resetStars()" data-star="5">★</span>
             </div>
-
-            <textarea
-                id="reviewText"
-                placeholder="Ваш отзыв *"
-                rows="4"
-                style="width: 100%; padding: 14px; margin-bottom: 15px; background: #1c1c1e; border: 1px solid #444; border-radius: 12px; color: #fff; font-size: 16px; resize: vertical; min-height: 80px; font-family: 'Segoe UI', Arial, sans-serif;"
-            ></textarea>
-
-            <button
-                onclick="submitReview()"
-                style="width: 100%; padding: 14px; background: #fff; color: #000; border: none; border-radius: 14px; font-weight: 600; font-size: 16px; cursor: pointer; transition: 0.3s;"
-                onmouseover="this.style.background='#ccc'"
-                onmouseout="this.style.background='#fff'"
-            >
-                📝 Опубликовать отзыв
-            </button>
+            <textarea id="reviewText" placeholder="Ваш отзыв *" rows="4" style="width: 100%; padding: 14px; margin-bottom: 15px; background: #1c1c1e; border: 1px solid #444; border-radius: 12px; color: #fff; font-size: 16px; resize: vertical; min-height: 80px; font-family: 'Segoe UI', Arial, sans-serif;"></textarea>
+            <button onclick="submitReview()" style="width: 100%; padding: 14px; background: #fff; color: #000; border: none; border-radius: 14px; font-weight: 600; font-size: 16px; cursor: pointer; transition: 0.3s;" onmouseover="this.style.background='#ccc'" onmouseout="this.style.background='#fff'">📝 Опубликовать отзыв</button>
         </div>
-
-        <!-- Список отзывов -->
         <div class="review-grid" id="reviewGrid">
-            <!-- Предустановленные отзывы -->
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>"Перешёл с Windows три года назад и жалею только об одном — что не сделал этого раньше. Всё летает, батарея держит реально весь день."</p>
-                <div class="author">Алексей, Senior Python Developer</div>
-            </div>
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>"Купила MacBook Air для учёбы. Лёгкий, помещается в маленькую сумочку, клавиатура — сказка. За весь день ни разу не доставала зарядку."</p>
-                <div class="author">Мария, студентка МГУ</div>
-            </div>
-            <div class="review-card">
-                <div class="stars">★★★★★</div>
-                <p>"Монтирую видео в 4K на MacBook Pro 16. Рендеринг часового фильма занимает 12 минут. Экономия времени колоссальная."</p>
-                <div class="author">Дмитрий, видеомонтажёр</div>
-            </div>
+            <div class="review-card"><div class="stars">★★★★★</div><p>"Перешёл с Windows три года назад и жалею только об одном — что не сделал этого раньше."</p><div class="author">Алексей, Senior Python Developer</div></div>
+            <div class="review-card"><div class="stars">★★★★★</div><p>"Купила MacBook Air для учёбы. Лёгкий, клавиатура — сказка."</p><div class="author">Мария, студентка МГУ</div></div>
+            <div class="review-card"><div class="stars">★★★★★</div><p>"Монтирую 4K на Pro 16. Рендеринг — 12 минут вместо часа."</p><div class="author">Дмитрий, видеомонтажёр</div></div>
         </div>
-
-        <!-- Кнопка "Показать больше" -->
         <div id="showMoreContainer" style="text-align: center; margin-top: 30px; display: none;">
-            <button
-                onclick="showMoreReviews()"
-                style="padding: 12px 30px; background: transparent; border: 1px solid #444; color: #fff; border-radius: 30px; cursor: pointer; font-size: 14px; transition: 0.3s;"
-                onmouseover="this.style.background='#222'"
-                onmouseout="this.style.background='transparent'"
-            >
-                Показать ещё отзывы ▼
-            </button>
+            <button onclick="showMoreReviews()" style="padding: 12px 30px; background: transparent; border: 1px solid #444; color: #fff; border-radius: 30px; cursor: pointer; font-size: 14px; transition: 0.3s;" onmouseover="this.style.background='#222'" onmouseout="this.style.background='transparent'">Показать ещё отзывы ▼</button>
         </div>
     </div>
 
-    <!-- ========== СКРИПТ ДЛЯ ОТЗЫВОВ (ДОБАВИТЬ В КОНЕЦ ВСЕХ СКРИПТОВ) ========== -->
-    <script>
-        // ====== СИСТЕМА ОТЗЫВОВ ======
-        let selectedRating = 0;
-        let reviewsVisible = 5; // Показывать по 5 отзывов
-
-        // Загружаем отзывы из localStorage
-        let userReviews = JSON.parse(localStorage.getItem('macbook_reviews')) || [];
-
-        function setRating(stars) {
-            selectedRating = stars;
-            updateStarDisplay(stars);
-        }
-
-        function hoverStars(stars) {
-            updateStarDisplay(stars);
-        }
-
-        function resetStars() {
-            updateStarDisplay(selectedRating);
-        }
-
-        function updateStarDisplay(count) {
-            const stars = document.querySelectorAll('#starRating span');
-            stars.forEach(star => {
-                const starNum = parseInt(star.getAttribute('data-star'));
-                star.style.color = starNum <= count ? '#ffd700' : '#333';
-            });
-        }
-
-        function submitReview() {
-            const name = document.getElementById('reviewName').value.trim();
-            const text = document.getElementById('reviewText').value.trim();
-            const errorEl = document.getElementById('reviewError');
-            const successEl = document.getElementById('reviewSuccess');
-
-            // Скрываем сообщения
-            errorEl.style.display = 'none';
-            successEl.style.display = 'none';
-
-            // Проверки
-            if (!name) {
-                errorEl.textContent = 'Пожалуйста, введите ваше имя';
-                errorEl.style.display = 'block';
-                return;
-            }
-            if (!text) {
-                errorEl.textContent = 'Пожалуйста, напишите отзыв';
-                errorEl.style.display = 'block';
-                return;
-            }
-            if (selectedRating === 0) {
-                errorEl.textContent = 'Пожалуйста, поставьте оценку (нажмите на звёзды)';
-                errorEl.style.display = 'block';
-                return;
-            }
-            if (text.length < 10) {
-                errorEl.textContent = 'Отзыв должен содержать минимум 10 символов';
-                errorEl.style.display = 'block';
-                return;
-            }
-
-            // Создаём отзыв
-            const review = {
-                name: name,
-                text: text,
-                rating: selectedRating,
-                date: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' })
-            };
-
-            // Добавляем в начало массива
-            userReviews.unshift(review);
-
-            // Сохраняем в localStorage
-            localStorage.setItem('macbook_reviews', JSON.stringify(userReviews));
-
-            // Обновляем отображение
-            renderAllReviews();
-
-            // Очищаем форму
-            document.getElementById('reviewName').value = '';
-            document.getElementById('reviewText').value = '';
-            selectedRating = 0;
-            updateStarDisplay(0);
-
-            // Показываем успех
-            successEl.textContent = '✅ Спасибо! Ваш отзыв опубликован.';
-            successEl.style.display = 'block';
-            setTimeout(() => { successEl.style.display = 'none'; }, 3000);
-
-            // Скроллим к отзывам
-            document.getElementById('reviewsSection').scrollIntoView({ behavior: 'smooth' });
-        }
-
-        function renderAllReviews() {
-            const allReviews = [...userReviews]; // Только пользовательские
-            const container = document.getElementById('reviewGrid');
-            const showMoreBtn = document.getElementById('showMoreContainer');
-
-            // Очищаем контейнер (сохраняем предустановленные)
-            const presetReviews = container.querySelectorAll('.review-card');
-
-            // Показываем только первые reviewsVisible отзывов
-            const visibleReviews = allReviews.slice(0, reviewsVisible);
-
-            // Удаляем старые пользовательские отзывы
-            container.querySelectorAll('.user-review').forEach(el => el.remove());
-
-            // Добавляем пользовательские отзывы в начало
-            visibleReviews.forEach(review => {
-                const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
-                const reviewCard = document.createElement('div');
-                reviewCard.className = 'review-card user-review';
-                reviewCard.style.animation = 'fade 0.5s ease';
-                reviewCard.innerHTML = `
-                    <div class="stars">${stars}</div>
-                    <p>"${review.text}"</p>
-                    <div class="author">${review.name} — ${review.date}</div>
-                `;
-                container.insertBefore(reviewCard, container.firstChild);
-            });
-
-            // Показываем/скрываем кнопку "Показать больше"
-            if (allReviews.length > reviewsVisible) {
-                showMoreBtn.style.display = 'block';
-            } else {
-                showMoreBtn.style.display = 'none';
-            }
-        }
-
-        function showMoreReviews() {
-            reviewsVisible += 5;
-            renderAllReviews();
-        }
-
-        // Инициализация при загрузке
-        renderAllReviews();
-    </script>
-
-        <!-- ===================================================== -->
-    <!-- ========== СЕКЦИЯ: FAQ (РАСШИРЕННАЯ) ========== -->
-    <!-- ===================================================== -->
     <div class="faq">
         <h2>❓ Часто задаваемые вопросы</h2>
-
-        <div class="faq-item">
-            <h3>Сложно ли перейти с Windows на Mac?</h3>
-            <p>Нет, macOS интуитивно понятна. Большинство пользователей осваиваются за 1–2 дня. Все популярные программы — Microsoft Office, Adobe Creative Suite, Google Chrome, Zoom, VS Code — работают на Mac. А если что-то непонятно, наша поддержка всегда готова помочь.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Какой MacBook выбрать студенту?</h3>
-            <p>MacBook Air на чипе M3 или M4 — идеальный баланс цены, портативности и производительности. Он весит всего 1,24 кг, работает до 18 часов без подзарядки и справляется с любыми учебными задачами: документы, презентации, обработка фото и даже монтаж видео. Если нужен экран побольше — берите Air 15".</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Подойдёт ли MacBook для игр?</h3>
-            <p>Современные чипы M3, M4 и M5 с аппаратным ускорением трассировки лучей справляются с такими AAA-играми, как Resident Evil Village, Baldur's Gate 3, Death Stranding, Lies of P. Однако если игры — ваша главная цель, возможно, стоит рассмотреть игровые ноутбуки на Windows. Для казуального гейминга MacBook более чем достаточен.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Есть ли рассрочка?</h3>
-            <p>Да, мы предлагаем беспроцентную рассрочку на 6, 12 и 24 месяца. Никаких скрытых платежей и переплат. Позвоните нам — и мы подробно расскажем об условиях и поможем оформить заявку.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Какая гарантия на MacBook?</h3>
-            <p>Все MacBook поставляются с официальной гарантией Apple сроком 1 год. Вы также можете приобрести расширенную гарантию AppleCare+ на 3 года, которая покрывает до двух случаев случайного повреждения в год с небольшой доплатой за ремонт.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Можно ли установить Windows на Mac?</h3>
-            <p>Да, через программу Parallels Desktop вы можете запускать Windows 11 прямо внутри macOS, без перезагрузки. Работает быстро и стабильно. Для нетребовательных задач есть и бесплатные решения вроде UTM.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Чем MacBook Air отличается от MacBook Pro?</h3>
-            <p><strong>Air</strong> — легче, тоньше, без вентилятора (абсолютно бесшумный), дешевле. Идеален для офиса, учёбы и интернета.<br><strong>Pro</strong> — ярче экран (XDR, 1600 нит, 120 Гц), мощнее процессоры (Pro/Max), есть HDMI и SD-слот, активное охлаждение для длительных нагрузок. Выбор зависит от ваших задач: если не монтируете видео по 8 часов — Air хватит с запасом.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Сколько лет прослужит MacBook?</h3>
-            <p>В среднем 5–7 лет без потери производительности. Единственная деталь, которая изнашивается — аккумулятор (около 1000 циклов зарядки). Замена батареи продлевает жизнь ещё на несколько лет. Многие пользователи до сих пор работают на MacBook 2015 года.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Работает ли MacBook с iPhone?</h3>
-            <p>Да, и это одна из главных фишек экосистемы Apple. Вы можете начать писать письмо на iPhone, а закончить на Mac. Скопировать текст на iPad — вставить на MacBook. Звонки и сообщения приходят сразу на все устройства. AirDrop передаёт файлы за секунды без проводов.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Какой объём памяти выбрать: 8, 16 или 32+ ГБ?</h3>
-            <p><strong>8 ГБ</strong> — хватит для браузера, документов, почты и просмотра видео. Подходит школьникам и студентам.<br><strong>16 ГБ</strong> — оптимально для большинства: много вкладок Chrome, Photoshop, монтаж 4K, программирование.<br><strong>32+ ГБ</strong> — для профессионалов: сложный монтаж, 3D, работа с нейросетями, виртуальные машины.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Есть ли у вас программа Trade-in?</h3>
-            <p>Да, вы можете сдать свой старый MacBook или даже ноутбук на Windows и получить скидку на новый до 100 000 ₽. Размер скидки зависит от модели и состояния. Позвоните нам — оценим по телефону за 5 минут.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>Как происходит покупка и доставка?</h3>
-            <p>Вы звоните нам по телефону <strong>+7 (905) 503-48-05</strong>, мы обсуждаем модель и конфигурацию. После подтверждения заказа отправляем его курьерской службой. Доставка по Москве — в день заказа, по России — 1–3 дня. Оплата при получении.</p>
-        </div>
-
-        <div class="faq-item">
-            <h3>MacBook какой модели лучше купить в 2025 году?</h3>
-            <p>Если бюджет ограничен — Air 13" M3 (от 129 990 ₽). Если нужна мощность и портативность — Pro 14" M4 Pro (от 229 990 ₽). Если вы профи и работаете с 8K-видео, 3D или AI — Pro 16" M5 Max (от 449 990 ₽). А если сомневаетесь — просто позвоните нам, мы поможем выбрать за 5 минут.</p>
-        </div>
+        <div class="faq-item"><h3>Сложно ли перейти с Windows на Mac?</h3><p>Нет, macOS интуитивно понятна. Большинство осваиваются за 1-2 дня.</p></div>
+        <div class="faq-item"><h3>Какой MacBook выбрать студенту?</h3><p>MacBook Air M3/M4 — идеальный баланс цены и портативности.</p></div>
+        <div class="faq-item"><h3>Подойдёт ли MacBook для игр?</h3><p>Чипы M3/M4/M5 с рейтрейсингом справляются с AAA-играми.</p></div>
+        <div class="faq-item"><h3>Есть ли рассрочка?</h3><p>Да, беспроцентная на 6, 12 и 24 месяца.</p></div>
+        <div class="faq-item"><h3>Air vs Pro — в чём разница?</h3><p>Air — легче, бесшумный. Pro — ярче экран, мощнее чипы.</p></div>
+        <div class="faq-item"><h3>Какой MacBook купить в 2025 году?</h3><p>Air M3 — бюджет, Pro 14" M4 Pro — универсал, Pro 16" M5 Max — для профи.</p></div>
     </div>
 
-    <!-- ========== КОНТАКТЫ (ВНИЗУ — id="checkout") ========== -->
     <div class="contact-section" id="checkout">
         <h2>Остались вопросы? Мы на связи!</h2>
         <div class="grid-2-col">
             <div class="form-box">
                 <h2>📞 Заказ и консультация</h2>
-                <!-- ⬇️ ДОПОЛНЕННЫЙ ТЕКСТ ⬇️ -->
-                <p style="color: #a1a1a6; margin-bottom: 15px; font-size: 16px;">
-                    Чтобы <strong style="color: #fff;">купить и заказать MacBook</strong>, а также получить консультацию по выбору модели — просто позвоните нам по номеру ниже. Мы поможем подобрать идеальный MacBook под ваши задачи и бюджет.
-                </p>
-                <p style="text-align: center; margin: 30px 0;">
-                    <strong style="color: #fff; font-size: 24px;">+7 (905) 503-48-05</strong>
-                </p>
+                <p style="color: #a1a1a6; margin-bottom: 15px; font-size: 16px;">Чтобы <strong style="color: #fff;">купить и заказать MacBook</strong>, позвоните нам по номеру ниже.</p>
+                <p style="text-align: center; margin: 30px 0;"><strong style="color: #fff; font-size: 24px;">+7 (905) 503-48-05</strong></p>
                 <p style="color: #a1a1a6; text-align: center;">Ежедневно с 9:00 до 21:00</p>
                 <p style="color: #888; font-size: 13px; text-align: center; margin-top: 10px;">Звонок бесплатный по России</p>
             </div>
@@ -648,14 +416,9 @@
                 <h2>📧 Telegram Канал</h2>
                 <p style="color: #a1a1a6; margin-bottom: 25px;">Подпишитесь и получайте:</p>
                 <ul style="color: #a1a1a6; margin-bottom: 25px; list-style: none; text-align: left;">
-                    <li>✅ Новинки Apple</li>
-                    <li>✅ Промокоды (до -20%)</li>
-                    <li>✅ Тест-драйвы</li>
-                    <li>✅ Советы по macOS</li>
+                    <li>✅ Новинки Apple</li><li>✅ Промокоды (до -20%)</li><li>✅ Тест-драйвы</li><li>✅ Советы по macOS</li>
                 </ul>
-                <a href="https://t.me/Solowoot_shop" target="_blank" style="display: inline-block; background: #0088cc; color: #fff; padding: 14px 20px; border-radius: 12px; text-decoration: none; font-weight: bold; text-align: center; width: 100%;">
-                    ✈️ Подписаться в Telegram
-                </a>
+                <a href="https://t.me/Solowoot_shop" target="_blank" style="display: inline-block; background: #0088cc; color: #fff; padding: 14px 20px; border-radius: 12px; text-decoration: none; font-weight: bold; text-align: center; width: 100%;">✈️ Подписаться в Telegram</a>
             </div>
         </div>
     </div>
@@ -667,7 +430,6 @@
 
     <!-- ========== СКРИПТЫ ========== -->
     <script>
-        // Данные товаров
         const products = [
             { id: 1, name: 'MacBook Air 13" M2 (2022)', specs: '8‑яд. CPU, 8‑яд. GPU, 8 ГБ, SSD 256 ГБ', price: 74990, img: 'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/mba13-midnight-select-202402?wid=600&hei=400', category: 'air' },
             { id: 2, name: 'MacBook Air 13" M2', specs: '8‑яд. CPU, 10‑яд. GPU, 8 ГБ, SSD 512 ГБ', price: 79990, img: 'https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/mba13-midnight-select-202402?wid=600&hei=400', category: 'air' },
@@ -737,20 +499,8 @@
             totalAmount.textContent = total.toLocaleString('ru-RU') + ' ₽';
         }
         function isInCart(productId) { return cart.some(item => item.id === productId); }
-
-        // Кнопка "Оплатить" — скролл к номеру телефона
-        function goToCheckout() {
-            closeCart();
-            setTimeout(() => {
-                document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' });
-            }, 300);
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            toast.textContent = msg; toast.classList.add('show');
-            setTimeout(() => toast.classList.remove('show'), 2000);
-        }
+        function goToCheckout() { closeCart(); setTimeout(() => { document.getElementById('checkout').scrollIntoView({ behavior: 'smooth' }); }, 300); }
+        function showToast(msg) { const toast = document.getElementById('toast'); toast.textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 2000); }
 
         // Аккаунт
         let currentUser = JSON.parse(localStorage.getItem('macbook_user')) || null;
@@ -764,7 +514,24 @@
             } else {
                 const mode = content.getAttribute('data-mode') || 'login';
                 if (mode === 'register') {
-                    content.innerHTML = `<button class="modal-close" onclick="closeAccount()">✕</button><h2>📝 Регистрация</h2><div class="error-msg" id="regError"></div><input type="text" id="regName" placeholder="Имя"><input type="email" id="regEmail" placeholder="Email"><input type="password" id="regPassword" placeholder="Пароль (мин. 4 символа)"><button class="btn" onclick="register()">Зарегистрироваться</button><div class="switch-link" onclick="switchAccountMode('login')">Уже есть аккаунт? Войти</div>`;
+                    content.innerHTML = `
+                        <button class="modal-close" onclick="closeAccount()">✕</button>
+                        <h2>📝 Регистрация</h2>
+                        <div class="error-msg" id="regError"></div>
+                        <input type="text" id="regName" placeholder="Имя">
+                        <input type="email" id="regEmail" placeholder="Email">
+                        <input type="password" id="regPassword" placeholder="Пароль (мин. 4 символа)">
+
+                        <!-- ===== КВАДРАТИК С ГАЛОЧКОЙ ===== -->
+                        <label class="agreement-label" for="regAgree">
+                            <input type="checkbox" id="regAgree" onchange="toggleRegButton()">
+                            <span class="agreement-checkbox"></span>
+                            <span class="agreement-text">Даю согласие на обработку персональных данных</a></span>
+                        </label>
+
+                        <button class="btn" id="regBtn" disabled onclick="register()">Зарегистрироваться</button>
+                        <div class="switch-link" onclick="switchAccountMode('login')">Уже есть аккаунт? Войти</div>
+                    `;
                 } else {
                     content.innerHTML = `<button class="modal-close" onclick="closeAccount()">✕</button><h2>👤 Вход</h2><div class="error-msg" id="loginError"></div><input type="email" id="loginEmail" placeholder="Email"><input type="password" id="loginPassword" placeholder="Пароль"><button class="btn" onclick="login()">Войти</button><div class="switch-link" onclick="switchAccountMode('register')">Нет аккаунта? Зарегистрироваться</div>`;
                 }
@@ -772,13 +539,25 @@
             }
         }
         function switchAccountMode(mode) { document.getElementById('accountModalContent').setAttribute('data-mode', mode); renderAccount(); }
+
+        // Функция для квадратика в регистрации
+        function toggleRegButton() {
+            const checkbox = document.getElementById('regAgree');
+            const btn = document.getElementById('regBtn');
+            if (checkbox && btn) {
+                btn.disabled = !checkbox.checked;
+            }
+        }
+
         function register() {
             const name = document.getElementById('regName').value.trim();
             const email = document.getElementById('regEmail').value.trim();
             const password = document.getElementById('regPassword').value;
+            const agree = document.getElementById('regAgree');
             const err = document.getElementById('regError');
             if (!name || !email || !password) { err.textContent = 'Заполните все поля'; err.style.display = 'block'; return; }
             if (password.length < 4) { err.textContent = 'Пароль минимум 4 символа'; err.style.display = 'block'; return; }
+            if (!agree || !agree.checked) { err.textContent = 'Необходимо согласие на обработку данных'; err.style.display = 'block'; return; }
             const users = JSON.parse(localStorage.getItem('macbook_users')) || [];
             if (users.find(u => u.email === email)) { err.textContent = 'Этот email уже зарегистрирован'; err.style.display = 'block'; return; }
             users.push({ name, email, password });
@@ -810,7 +589,6 @@
             showToast('Вы вышли из аккаунта');
         }
 
-        // Каталог
         function renderCatalog() {
             document.getElementById('catalogAir').innerHTML = renderProductCards(products.filter(p => p.category === 'air'));
             document.getElementById('catalogPro14').innerHTML = renderProductCards(products.filter(p => p.category === 'pro14'));
@@ -824,9 +602,7 @@
                     <div class="product-info">
                         <h4>${p.name}</h4><p class="specs">${p.specs}</p>
                         <div class="price">${p.price.toLocaleString('ru-RU')} ₽</div>
-                        <button class="btn-buy ${inCart ? 'in-cart' : ''}" onclick="addToCart(${p.id})">
-                            ${inCart ? '✓ В корзине (ещё)' : '🛒 В корзину'}
-                        </button>
+                        <button class="btn-buy ${inCart ? 'in-cart' : ''}" onclick="addToCart(${p.id})">${inCart ? '✓ В корзине (ещё)' : '🛒 В корзину'}</button>
                     </div>
                 </div>`;
             }).join('');
@@ -846,6 +622,52 @@
         updateCartUI();
         renderCatalog();
         if (currentUser) document.getElementById('accountBtn').textContent = '👤✓';
+
+        // Отзывы
+        let selectedRating = 0;
+        let reviewsVisible = 5;
+        let userReviews = JSON.parse(localStorage.getItem('macbook_reviews')) || [];
+        function setRating(stars) { selectedRating = stars; updateStarDisplay(stars); }
+        function hoverStars(stars) { updateStarDisplay(stars); }
+        function resetStars() { updateStarDisplay(selectedRating); }
+        function updateStarDisplay(count) { document.querySelectorAll('#starRating span').forEach(star => { star.style.color = parseInt(star.getAttribute('data-star')) <= count ? '#ffd700' : '#333'; }); }
+        function submitReview() {
+            const name = document.getElementById('reviewName').value.trim();
+            const text = document.getElementById('reviewText').value.trim();
+            const errorEl = document.getElementById('reviewError');
+            const successEl = document.getElementById('reviewSuccess');
+            errorEl.style.display = 'none'; successEl.style.display = 'none';
+            if (!name) { errorEl.textContent = 'Введите имя'; errorEl.style.display = 'block'; return; }
+            if (!text) { errorEl.textContent = 'Напишите отзыв'; errorEl.style.display = 'block'; return; }
+            if (selectedRating === 0) { errorEl.textContent = 'Поставьте оценку'; errorEl.style.display = 'block'; return; }
+            if (text.length < 10) { errorEl.textContent = 'Минимум 10 символов'; errorEl.style.display = 'block'; return; }
+            const review = { name, text, rating: selectedRating, date: new Date().toLocaleDateString('ru-RU', { day: 'numeric', month: 'long', year: 'numeric' }) };
+            userReviews.unshift(review);
+            localStorage.setItem('macbook_reviews', JSON.stringify(userReviews));
+            renderAllReviews();
+            document.getElementById('reviewName').value = '';
+            document.getElementById('reviewText').value = '';
+            selectedRating = 0; updateStarDisplay(0);
+            successEl.textContent = '✅ Отзыв опубликован!';
+            successEl.style.display = 'block';
+            setTimeout(() => { successEl.style.display = 'none'; }, 3000);
+        }
+        function renderAllReviews() {
+            const container = document.getElementById('reviewGrid');
+            const showMoreBtn = document.getElementById('showMoreContainer');
+            const visibleReviews = userReviews.slice(0, reviewsVisible);
+            container.querySelectorAll('.user-review').forEach(el => el.remove());
+            visibleReviews.forEach(review => {
+                const stars = '★'.repeat(review.rating) + '☆'.repeat(5 - review.rating);
+                const card = document.createElement('div');
+                card.className = 'review-card user-review';
+                card.innerHTML = `<div class="stars">${stars}</div><p>"${review.text}"</p><div class="author">${review.name} — ${review.date}</div>`;
+                container.insertBefore(card, container.firstChild);
+            });
+            showMoreBtn.style.display = userReviews.length > reviewsVisible ? 'block' : 'none';
+        }
+        function showMoreReviews() { reviewsVisible += 5; renderAllReviews(); }
+        renderAllReviews();
     </script>
 
 </body>
